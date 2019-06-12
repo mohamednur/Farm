@@ -2,7 +2,7 @@ from django import forms
 # from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserProfile, Crops
+from .models import UserProfile, Crops, Fertilizer
 
 
 class ExtendedUserCreationForm(UserCreationForm):
@@ -59,3 +59,13 @@ class addProduce(forms.ModelForm):
                 raise forms.ValidationError("This crop already exists")
 
             return name
+
+
+class addFertilizer(forms.ModelForm):
+    class Meta:
+        model = Fertilizer
+        fields = ('fname', 'quantity', 'used_for_crop')
+
+        def clean_name(self):
+            fertilzer_name = self.cleaned_data['fname']
+            return fertilzer_name

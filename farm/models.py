@@ -18,3 +18,9 @@ class Crops(models.Model):
 
     def __str__(self):
         return '%s ' % (self.name)
+
+
+class Fertilizer(models.Model):
+    fname = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    used_for_crop = models.ForeignKey(Crops, on_delete=models.CASCADE)

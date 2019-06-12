@@ -6,7 +6,7 @@ from .forms import ExtendedUserCreationForm, UserprofileForm, CropsForm, addProd
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import User, Crops
+from .models import User, Crops, Fertilizer
 
 
 @login_required
@@ -130,3 +130,8 @@ class CropsDetailView(DeleteView):
     model = Crops
     context_object_name = 'crop_detail'
     template_name = ('farm/crops_detail.html')
+
+
+class FertilizerCreate(CreateView):
+    model = Fertilizer
+    fields = '__all__'

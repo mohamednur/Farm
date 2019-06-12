@@ -1,10 +1,33 @@
+{% extends "farm/base.html" %} 
 {% load crispy_forms_tags %}
 
-<h1> User update </h1>
-<form method="post">
-{% csrf_token %}
-{{ form | crispy}}
+{% load i18n %}
 
-<input type="submit" value="Submit" />
+{% block content %}
 
-</form>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Employee</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+             <a class="nav-link "   href="{% url 'user_list' %}"  ><button type="button" class="btn btn-sm btn-outline-secondary">users</a>
+             <a class="nav-link "   href="#"  ><button type="button" class="btn btn-sm btn-outline-secondary">Delete></a>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+        </div>
+      </div>
+
+     
+            <h1> User update </h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form | crispy}}
+
+                <input type="submit" value="Submit" />
+
+            </form>
+</main>
+{% endblock content %}

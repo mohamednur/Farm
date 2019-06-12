@@ -29,6 +29,8 @@ urlpatterns = [
 
     path('Admin_Dash/Add_crop/', farm_views.Add_crops, name="Add_crops"),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('Admin_Dash/add_fertilizer/',
+         farm_views.FertilizerCreate.as_view(), name='add_fertilizer'),
     path('success/', farm_views.success, name='success'),
 
 ]
