@@ -1,0 +1,119 @@
+{% extends "farm/base.html" %} 
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Employee</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+            -->
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+         
+        </div>
+      </div>
+
+     
+
+      <h1>Users</h1>
+
+<table class="table table-striped table-dark ">
+<thead>
+    <tr>
+    <th>Username</th>
+    <th>first Name</th>
+    <th>Last name</th>
+    <th>Email</th>
+    <th>status</th>
+    
+    </tr>
+</thead>
+<tbody>
+    {% for users in object_list %}
+    <tr>
+    <td>{{ users.username }}</td>
+    <td>{{ users.first_name }}</td>
+     <td>{{ users.last_name }}</td>
+    <td>{{ users.email }}</td>
+    <td>{{ users.is_active }}</td>
+    <td>
+    <a class="btn btn-primary"  role="button" href="{% url "user_detail" users.id %}">details</a>
+    <a class="btn btn-primary"  role="button" href="{% url "user_update" users.id %}">edit</a>
+    <a class="btn btn-primary"  role="button" href="{% url "user_delete" users.id %}">delete</a>
+
+  
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+      
+      </main>
+  
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

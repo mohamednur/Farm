@@ -63,7 +63,7 @@
       <h2>Add Produce Form</h2>
       <form method="post">
         {% csrf_token %}
-        {{ produce_form| crispy}}
+        {{ produce_form | crispy}}
         
         <button type="submit">Save changes </button>
       </form>

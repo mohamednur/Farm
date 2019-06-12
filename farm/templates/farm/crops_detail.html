@@ -7,31 +7,124 @@
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Crops</h1>
+        <h1 class="h2">Crops Detail View</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
-             <a class="nav-link "   href="{% url 'crops_list' %}"  ><button type="button" class="btn btn-sm btn-outline-secondary">Crops</a>
+            <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+            -->
           </div>
           <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
             <span data-feather="calendar"></span>
             This week
           </button>
+         
         </div>
       </div>
+      <h1>User Details </h1>
+
+
+    <p>Name: {{object.name}}</p>
+    <p>Description: {{ object.description}}</p>
+    <p>Quantity: {{ object.last_name}}</p>
+    
+    <!--<p>mobile number: {{ object.mobile_no}}</p>-->
+
+
 
      
 
-      <h2>Crop Creation Form</h2>
-      <form method="post">
-        {% csrf_token %}
-        {{ crops_form| crispy}}
-        
-        <button type="submit">Save changes </button>
-      </form>
+      
+
       
       </main>
   
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
