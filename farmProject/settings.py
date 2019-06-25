@@ -63,7 +63,7 @@ ROOT_URLCONF = 'farmProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,6 +147,8 @@ LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'
 
+
 LOGIN_REDIRECT_URL = 'admin_dash'
+LOGIN_REDIRECT_URL = 'addproduce'
 
 LOGOUT_REDIRECT_URL = 'admin_dash'

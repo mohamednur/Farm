@@ -6,44 +6,47 @@
 {% block content %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Crop List</h1>
+        <h1 class="h2">Financial Records</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
             -->
           </div>
-          
          
         </div>
       </div>
      
-            <h1>Crops</h1>
+            <h1>Farm machinery List</h1>
 
             <table class="table table-striped table-dark ">
                 <thead class="thead-dark">
                     <tr>
+                    <th scope="col">Machinery Type</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Quantity</th>
+                    <th scope="col">Identifaication Number</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Last Serviced</th>
+                    <th scope="col">Date of Purchase</th>
                     
                     
                     
                     </tr>
                 </thead>
                 <tbody>
-                    {% for crops in object_list %}
+                    {% for farm_machinery in object_list %}
                     <tr>
-                    
-                    <td>{{ crops.name }}</td>
-                    
-                    <td>{{ crops.description }}</td>
-                    
-                    <td>{{ crops.quantity }}</td>
+                    <td>{{ farm_machinery.machinery_type_verbose }}</td>  
+                    <td>{{ farm_machinery.name }}</td>
+                    <td>{{ farm_machinery.identification_no }}</td>
+                    <td>{{ farm_machinery.machinery_status_verbose }}</td>
+                    <td>{{ farm_machinery.last_serviced }}</td>
+                    <td>{{ farm_machinery.date_of_purchase }}</td>
                     <td>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_detail" crops.id %}">details</a>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_update" crops.id %}">edit</a>
-                        <a class="btn btn-primary" role="button"href="{% url "crop_delete" crops.id %}">delete</a>
+                        
+                        <a class="btn btn-primary" role="button"href=" {% url "farm-machinery-details" farm_machinery.id %}">details</a>
+                        <a class="btn btn-primary" role="button" href="{% url "farm-machinery-update" farm_machinery.id %}">Edit</a>
+                         <a class="btn btn-primary" role="button"href=" {% url "farm-machinery-delete" farm_machinery.id %}">delete</a>
                   
                     </td>
                     </tr>

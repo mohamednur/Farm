@@ -6,44 +6,42 @@
 {% block content %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Crop List</h1>
+        <h1 class="h2">Financial Records</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
             -->
           </div>
-          
          
         </div>
       </div>
      
-            <h1>Crops</h1>
+            <h1>financial Records Lists</h1>
 
             <table class="table table-striped table-dark ">
                 <thead class="thead-dark">
                     <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Quantity</th>
+                    <th scope="col">Receipt Number</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
                     
                     
                     
                     </tr>
                 </thead>
                 <tbody>
-                    {% for crops in object_list %}
+                    {% for finance in object_list %}
                     <tr>
                     
-                    <td>{{ crops.name }}</td>
+                    <td>{{ finance.receipt_no }}</td>
                     
-                    <td>{{ crops.description }}</td>
+                    <td>{{ finance.Amount }}</td>
                     
-                    <td>{{ crops.quantity }}</td>
+                    <td>{{ finance.date_of_payment }}</td>
                     <td>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_detail" crops.id %}">details</a>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_update" crops.id %}">edit</a>
-                        <a class="btn btn-primary" role="button"href="{% url "crop_delete" crops.id %}">delete</a>
+                        
+                        <a class="btn btn-primary" role="button"href="{% url "financialRecords_delete" finance.id %}">delete</a>
                   
                     </td>
                     </tr>

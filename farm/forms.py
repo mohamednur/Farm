@@ -1,8 +1,10 @@
 from django import forms
+from django.core.validators import validate_integer
 # from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserProfile, Crops, Fertilizer
+from .models import UserProfile, Crops, Fertilizer, FinancialRecords, FarmMachinery
 
 
 class ExtendedUserCreationForm(UserCreationForm):
@@ -38,6 +40,9 @@ class CropsForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data['name']
+        quantity = self.cleaned_data['quantity']
+        if (quantity < 0):
+            raise forms.ValidationError("Quantity cannot be less than 0")
 
         name_qs = Crops.objects.filter(name__iexact=name)
         if name_qs.exists():
@@ -46,7 +51,7 @@ class CropsForm(forms.ModelForm):
         return name
 
 
-class addProduce(forms.ModelForm):
+class AddProduceForm(forms.ModelForm):
     class Meta:
         model = Crops
         fields = ('name', 'description', 'quantity')
@@ -54,18 +59,68 @@ class addProduce(forms.ModelForm):
         def clean_name(self):
             name = self.cleaned_data['name']
 
+            quantity = self.cleaned_data['quantity']
+            if (quantity == 0):
+                raise forms.ValidationError("Quantity cannot be less than 0")
+
+            # validate_integer(quantity, None)
+
             name_qs1 = Crops.objects.filter(name__iexact=name)
             if name_qs1.exists():
                 raise forms.ValidationError("This crop already exists")
 
-            return name
+            return name, quantity
 
 
-class addFertilizer(forms.ModelForm):
+class AddFertilizerForm(forms.ModelForm):
     class Meta:
         model = Fertilizer
         fields = ('fname', 'quantity', 'used_for_crop')
+        labels = {
+            "fname": "Fertilizer Name",
+        }
+        help_texts = {
+            "fname": "Enter Fertilizer name",
+        }
 
         def clean_name(self):
-            fertilzer_name = self.cleaned_data['fname']
-            return fertilzer_name
+            fertilizer_name = self.cleaned_data['fname']
+            fertilizer_quantity = self.cleaned_data['quantity']
+
+            if (fertilizer_quantity < 3):
+                raise forms.ValidationError("Quantity cannot be less than 0")
+            return fertilizer_name, fertilizer_quantity
+
+
+class FinancialRecordsForms(forms.ModelForm):
+    class Meta:
+        model = FinancialRecords
+
+        fields = ('receipt_no', 'Amount', 'date_of_payment')
+        labels = {
+            "receipt_no": "Receipt Number",
+            "date_of_payment": "Date Of Payment",
+        }
+        help_texts = {
+            "receipt_no": "Enter The Receipt Number",
+            "date_of_payment": "Enter The Date when the payment was made",
+        }
+
+
+class FarmMachineryForm(forms.ModelForm):
+    class Meta:
+        model = FarmMachinery
+
+        fields = ('machinery_type', 'name', 'identification_no',
+                  'status', 'last_serviced', 'date_of_purchase')
+        labels = {
+
+        }
+        help_texts = {
+            'machinery_type': "Select The type of Machinery",
+            'name': "Enter the name of the machine",
+            'identification_no': "Enter Identification Number of the machine",
+            'status': "Select the status of the machine",
+            'last_serviced': "Enter the date when the machine was last serviced",
+            'date_of_purchase': "Enter the date when the machine was purchased",
+        }

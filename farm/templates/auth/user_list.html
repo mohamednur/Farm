@@ -14,11 +14,7 @@
             <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
             -->
           </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-         
+          
         </div>
       </div>
 
@@ -42,22 +38,36 @@
     <tr>
     <td>{{ users.username }}</td>
     <td>{{ users.first_name }}</td>
-     <td>{{ users.last_name }}</td>
+    <td>{{ users.last_name }}</td>
     <td>{{ users.email }}</td>
     <td>{{ users.is_active }}</td>
     <td>
-    <a class="btn btn-primary"  role="button" href="{% url "user_detail" users.id %}">details</a>
-    <a class="btn btn-primary"  role="button" href="{% url "user_update" users.id %}">edit</a>
-    <a class="btn btn-primary"  role="button" href="{% url "user_delete" users.id %}">delete</a>
-
+    <a class="btn btn-primary float-left"  role="button" href="{% url "user_detail" users.id %}">details</a> 
+    <a class="btn btn-primary ml-3"  role="button" href="{% url "user_update" users.id %}">edit</a>
+    <a class="btn btn-primary ml-3 "  role="button" href="{% url "user_delete" users.id %}">delete</a>
+    </td>
   
     </tr>
     {% endfor %}
-</tbody>
-</table>
+    </tbody>
+    </table>
 
-      
-      </main>
+     <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+        </span> 
+      </div>
+
+
+    </main>
   
 
 {% endblock content %}

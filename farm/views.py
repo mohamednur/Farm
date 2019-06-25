@@ -1,17 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
-from .forms import ExtendedUserCreationForm, UserprofileForm, CropsForm, addProduce
+from .forms import ExtendedUserCreationForm, UserprofileForm, CropsForm, AddProduceForm, AddFertilizerForm, FinancialRecordsForms, FarmMachineryForm
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import User, Crops, Fertilizer
+from .models import User, Crops, Fertilizer, Produce, FinancialRecords, FarmMachinery
+
+decorators = [staff_member_required, login_required]
 
 
-@login_required
 def index(request):
-    return render(request, 'index.html')
+    if request.user.is_staff:
+        return redirect('admin_dash')
+    else:
+        return redirect('addProduce')
+    return render(request)
 
 
 @login_required
@@ -41,7 +47,7 @@ def Add_employee(request):
 
             profile.save()
 
-            return redirect('index')
+            return redirect('user_list')
     else:
         user_form = ExtendedUserCreationForm()
         profile_form = UserprofileForm()
@@ -50,40 +56,8 @@ def Add_employee(request):
     return render(request, 'farm/Add_employee.html', context)
 
 
-def Add_crops(request):
-    crops_form = CropsForm(request.POST)
-    if crops_form.is_valid():
-        crops = crops_form.save()
-
-        return redirect('index')
-    else:
-
-        crops_form = CropsForm()
-
-    context = {'crops_form': crops_form}
-    return render(request, 'farm/Add_crop.html', context)
-
-
-@login_required
-def Add_produce(request):
-
-    produce_form = addProduce(request.POST)
-
-    if produce_form.is_valid():
-        produce = produce_form.save()
-
-    else:
-        produce_form = addProduce()
-
-    context = {'produce': produce_form}
-    return render(request, 'farm/addProduce.html', context)
-
-
-def success(request):
-    return render(request, 'auth/success.html')
-
-
 class UserListView(ListView):
+    paginate_by = 10
     model = User
     context_object_name = 'user_list'
     template_name = ('auth/user_list.html')
@@ -108,7 +82,17 @@ class UserDeleteview(DeleteView):
     success_url = reverse_lazy('user_list')
 
 
+class CropCreateView(CreateView):
+    model = Crops
+    form_class = CropsForm
+    template_name = ('farm/Add_crop.html')
+    # fields = '__all__'
+
+    success_url = reverse_lazy('crops_list')
+
+
 class CropListView(ListView):
+    paginate_by = 8
     model = Crops
     context_object_name = 'crop_list'
     template_name = ('farm/crops_list.html')
@@ -134,4 +118,95 @@ class CropsDetailView(DeleteView):
 
 class FertilizerCreate(CreateView):
     model = Fertilizer
+    form_class = AddFertilizerForm
+    template_name = ('farm/fertilizer_form.html')
+    success_url = reverse_lazy('crops_list')
+
+
+class FertilizerView(ListView):
+    model = Fertilizer
+    context_object_name = 'fertilizer_list'
+    template_name = ('farm/fertilizer_list.html')
+
+
+class FertilizerDeleteView(DeleteView):
+    model = Fertilizer
+    form_class = AddFertilizerForm
+
+    success_url = reverse_lazy('fertilizer_list')
+
+
+class FertlizerUpdateView(UpdateView):
+    model = Fertilizer
+    form_class = AddFertilizerForm
+    template_name = ('farm/fertilizer_form.html')
+
+    success_url = reverse_lazy('fertilizer_list')
+
+
+class FinancialRecordsCreate(CreateView):
+    model = FinancialRecords
+    form_class = FinancialRecordsForms
+    template_name = ('farm/financialRecord_form.html')
+    success_url = reverse_lazy('financialRecords_list')
+
+
+class FinancialRecordsView(ListView):
+    model = FinancialRecords
+    context_object_name = 'financialRecords_list'
+    template_name = ('farm/financialRecords_list.html')
+
+
+class FinancialRecordsDeleteView(DeleteView):
+    model = FinancialRecords
+    form_class = FinancialRecordsForms
+
+    success_url = reverse_lazy('financialRecords_list')
+
+
+class FinancialRecordsUpdateView(UpdateView):
+    model = FinancialRecords
+    form_class = FinancialRecordsForms
+    template_name = ('farm/fertilizer_form.html')
+    success_url = reverse_lazy('financialRecords_list')
+
+
+@method_decorator(decorators, name='dispatch')
+class FarmMachineryCreateView(CreateView):
+    model = FarmMachinery
+    form_class = FarmMachineryForm
+    template_name = ('farm/farmMachinery-form.html')
+    success_url = reverse_lazy('farm-machinery-list')
+
+
+class FarmMachineryView(ListView):
+    model = FarmMachinery
+    context_object_name = 'farm-machinery-list'
+    template_name = ('farm/farm-machinery-list.html')
+
+
+class FarmMachineryDetailView(DetailView):
+    model = FarmMachinery
+    context_object_name = 'farm-machinery-detail'
+    template_name = ('farm/farm-machinery-details.html')
+
+
+class FarmMachineryDeleteView(DeleteView):
+    model = FarmMachinery
+    form_class = FarmMachineryForm
+
+    success_url = reverse_lazy('farm-machinery-list')
+
+
+class FarmMachineryUpdateView(UpdateView):
+    model = FarmMachinery
+    form_class = FarmMachineryForm
+    template_name = ('farm/farmmachinery-form.html')
+    success_url = reverse_lazy('farm-machinery-list')
+
+
+@method_decorator(login_required, name='dispatch')
+class AddProduce(CreateView):
+    model = Produce
     fields = '__all__'
+    success_url = reverse_lazy('addProduce')

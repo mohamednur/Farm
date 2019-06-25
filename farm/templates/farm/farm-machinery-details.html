@@ -7,26 +7,28 @@
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Crops Detail View</h1>
+        <h1 class="h2">Farm Machinery Details</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
             -->
           </div>
-          
+         
          
         </div>
       </div>
-      <h1>Crop Details </h1>
-
-
-    <p>Name: {{object.name}}</p>
-    <p>Description: {{ object.description}}</p>
-    <p>Quantity: {{ object.last_name}}</p>
+      <h1>Farm machinery Details </h1>
     
-    <!--<p>mobile number: {{ object.mobile_no}}</p>-->
-
+    
+    
+    <p class="lead">Machinery Type: {{object.machinery_type_verbose}}</p>
+    <p class="lead">Name: {{ object.name}}</p>
+    <p class="lead">Identification Number: {{ object.identification_no}}</p>
+    <p class="lead">Status: {{ object.machinery_status_verbose }}</p>
+    <p class="lead">Last Serviced: {{ object.last_serviced}}</p>
+    <p class="lead">Date of Purchase: {{ object.date_of_purchase}}</p>
+    
 
 
      

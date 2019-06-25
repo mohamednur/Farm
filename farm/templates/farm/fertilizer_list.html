@@ -6,7 +6,7 @@
 {% block content %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Crop List</h1>
+        <h1 class="h2">Fertilizer Records</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <!--<button type="button" class="btn btn-sm btn-outline-secondary">Update</button>
@@ -18,32 +18,34 @@
         </div>
       </div>
      
-            <h1>Crops</h1>
+            <h1>fertilizer</h1>
 
             <table class="table table-striped table-dark ">
                 <thead class="thead-dark">
                     <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Description</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Description</th>
                     
                     
                     
                     </tr>
                 </thead>
                 <tbody>
-                    {% for crops in object_list %}
+                    {% for fertilizer in object_list %}
                     <tr>
                     
-                    <td>{{ crops.name }}</td>
+                    <td>{{ fertilizer.fname }}</td>
                     
-                    <td>{{ crops.description }}</td>
+                    <td>{{ fertilizer.quantity }}</td>
                     
-                    <td>{{ crops.quantity }}</td>
+                    <td>{{ fertilizer.used_for_crop }}</td>
                     <td>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_detail" crops.id %}">details</a>
-                        <a class="btn btn-primary"  role="button" href="{% url "crop_update" crops.id %}">edit</a>
-                        <a class="btn btn-primary" role="button"href="{% url "crop_delete" crops.id %}">delete</a>
+                        
+                        <a class="btn btn-primary" role="button"href="#">detail</a>
+                        <a class="btn btn-primary" role="button"href="{% url "fertilizer_update" fertilizer.id %}">edit</a>
+                        <a class="btn btn-primary" role="button"href="{% url "fertilizer_delete" fertilizer.id %}">delete</a>
+                        
                   
                     </td>
                     </tr>

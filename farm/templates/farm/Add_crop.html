@@ -11,12 +11,9 @@
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
              <a class="nav-link "   href="{% url 'crops_list' %}"  ><button type="button" class="btn btn-sm btn-outline-secondary">Crops</a>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+            
           </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
+          
         </div>
       </div>
 
@@ -25,7 +22,7 @@
       <h2>Crop Creation Form</h2>
       <form method="post">
         {% csrf_token %}
-        {{ crops_form| crispy}}
+        {{ form| crispy}}
         
         <button type="submit">Save changes </button>
       </form>
