@@ -4,19 +4,21 @@
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Employee</h1>
+        <h1 class="h2">Produce sold</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
-            
+             
           </div>
-         
+          
         </div>
       </div>
-            <h1> Delete User? </h1>
-            <form method="post">
-                {% csrf_token %}
-                <p> Are you sure you want to delete this user? {{ users.username }}</p>
-            <input type="submit" value="Submit" />
-            </form>
- </main>
+
+
+        <h1> Delete Produce Sold </h1>
+        <form method="post">
+        {% csrf_token %}
+        <p> Are you sure you want to delete this produce sold Record?</p>
+        <input type="submit" value="Submit" />
+        </form>
+</main>
 {% endblock content %}

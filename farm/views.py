@@ -3,21 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
-from .forms import ExtendedUserCreationForm, UserprofileForm, CropsForm, AddProduceForm, AddFertilizerForm, FinancialRecordsForms, FarmMachineryForm
+from .forms import ExtendedUserCreationForm, UserprofileForm, CropsForm, AddProduceForm, AddFertilizerForm, FinancialRecordsForms, FarmMachineryForm, ProduceForm, ProduceSoldForm
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import User, Crops, Fertilizer, Produce, FinancialRecords, FarmMachinery
-
+from .models import User, Crops, Fertilizer, Produce, FinancialRecords, FarmMachinery, ProduceSold
+from django.views.generic import View
+from django.utils import timezone
+from .render import Render
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 decorators = [staff_member_required, login_required]
-
-
-def index(request):
-    if request.user.is_staff:
-        return redirect('admin_dash')
-    else:
-        return redirect('addProduce')
-    return render(request)
 
 
 @login_required
@@ -26,10 +23,44 @@ def home(request):
     return render(request, 'farm/admin_dash.html')
 
 
+def help(request):
+    return render(request, 'help.html')
+
+
+@login_required
+@staff_member_required
+def online_help(request):
+    return render(request, 'farm/online-help.html')
+
+
 @login_required
 @staff_member_required
 def admin_dash(request):
     return render(request, 'farm/admin_dash.html')
+
+
+def index(request):
+    if request.method == "POST":
+        username = request.POST.get('username', '')
+        password = request.POST.get('password' '')
+
+        print(username, password)
+
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            if request.user.is_staff:
+                return redirect('admin_dash')
+            elif request.user.is_staff is False:
+                return redirect('addProduce')
+            else:
+                return redirect('login')
+        else:
+            form = AuthenticationForm()
+            msg = messages.error(
+                request, "Invalid Credentials Please Enter valid credentials", fail_silently=True)
+            return render(request, 'registration/login.html', {'msg': msg, 'form': form})
+    return render(request, 'registration/login.html')
 
 
 @login_required
@@ -171,6 +202,12 @@ class FinancialRecordsUpdateView(UpdateView):
     success_url = reverse_lazy('financialRecords_list')
 
 
+class FinancialRecordsDetailView(DetailView):
+    model = FinancialRecords
+    context_object_name = 'financialRecords_detail'
+    template_name = ('farm/financialRecords_detail.html')
+
+
 @method_decorator(decorators, name='dispatch')
 class FarmMachineryCreateView(CreateView):
     model = FarmMachinery
@@ -208,5 +245,162 @@ class FarmMachineryUpdateView(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class AddProduce(CreateView):
     model = Produce
-    fields = '__all__'
+    form_class = ProduceForm
     success_url = reverse_lazy('addProduce')
+
+
+class ProduceList(ListView):
+    model = Produce
+    context_object_name = 'ProduceList'
+    template_name = 'farm/produce-list.html'
+
+
+class ProduceUpdateView(UpdateView):
+    model = Produce
+    form_class = ProduceForm
+    template_name = ('farm/produce_form.html')
+    success_url = reverse_lazy('produce-list')
+
+
+class ProduceDeleteView(DeleteView):
+    model = Produce
+    form_class = ProduceForm
+
+    success_url = reverse_lazy('produce-list')
+
+
+class ProduceDetailView(DetailView):
+    model = Produce
+    context_object_name = 'produce-detail'
+    template_name = ('farm/produce-details.html')
+
+
+class ProduceSoldView(CreateView):
+    model = ProduceSold
+    form_class = ProduceSoldForm
+
+    template_name = ('farm/produceSold_form.html')
+    success_url = reverse_lazy('produce-list')
+
+
+class ProduceSoldUpdateView(UpdateView):
+    model = ProduceSold
+    form_class = ProduceSoldForm
+    template_name = ('farm/produceSold_form.html')
+    success_url = reverse_lazy('produce-sold-list')
+
+
+class ProduceSoldList(ListView):
+    model = ProduceSold
+    context_object_name = 'ProduceSoldList'
+    template_name = 'farm/produce-sold-list.html'
+
+
+class ProduceSoldDeleteView(DeleteView):
+    model = ProduceSold
+    form_class = ProduceSoldForm
+
+    success_url = reverse_lazy('produce-sold-list')
+
+
+class ProduceSoldDetailView(DetailView):
+    model = ProduceSold
+    context_object_name = 'produce-sold-detail'
+    template_name = ('farm/produce-sold-details.html')
+
+
+class Pdf(View):
+
+    def get(self, request):
+        records = FinancialRecords.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'records': records,
+            'request': request,
+        }
+        return Render.render('farm/pdf.html', params)
+
+
+class CropsPdf(View):
+    def get(self, request):
+        all_crops = Crops.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'all_crops': all_crops,
+            'request': request
+        }
+        return Render.render('farm/crops-pdf.html', params)
+
+
+class FarmMachineryPdf(View):
+    def get(self, request):
+        farm_machinery_report = FarmMachinery.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'farm_machinery_report': farm_machinery_report,
+            'request': request
+        }
+        return Render.render('farm/farm-machinery-pdf.html', params)
+
+
+class ProduceSalesPdf(View):
+    def get(self, request):
+        produce_sales_report = ProduceSold.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'produce_sales_report': produce_sales_report,
+            'request': request
+        }
+        return Render.render('farm/produce-sales-pdf.html', params)
+
+
+class FinancialPdf(View):
+    def get(self, request):
+        financial_report = FinancialRecords.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'financial_report': financial_report,
+            'request': request
+        }
+        return Render.render('farm/financial-pdf.html', params)
+
+
+class FertilizerPdf(View):
+    def get(self, request):
+        fertilizer_report = Fertilizer.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'fertilizer_report': fertilizer_report,
+            'request': request
+        }
+        return Render.render('farm/fertilizer-pdf.html', params)
+
+
+class UserPdf(View):
+    def get(self, request):
+        users_report = User.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'users_report': users_report,
+            'request': request
+        }
+        return Render.render('farm/users-pdf.html', params)
+
+
+class ProducePdf(View):
+    def get(self, request):
+        produce_report = Produce.objects.all()
+        today = timezone.now()
+        params = {
+            'today': today,
+            'produce_report': produce_report,
+            'request': request
+        }
+        return Render.render('farm/produce-pdf.html', params)

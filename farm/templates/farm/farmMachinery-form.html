@@ -18,13 +18,13 @@
       </div>
 
             <h1> Add Farm Machinery </h1> 
-            <form method="post">
+            <form method="post" novalidate>
             
                 {% csrf_token %}
                 
-
+               
                 {{ form | crispy}}
-
+                
                 <input type="submit" value="Submit" />
 
             </form>

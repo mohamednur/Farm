@@ -47,7 +47,7 @@
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="btn btn-primary" role="button" href="{% url 'password_change' %}">change password</a>
-      <a class="btn btn-primary" role="button" href="{% url 'help' %}">help</a>
+      <a class="btn btn-primary" role="button" href="{% url 'logout' %}">help</a>
        <a class="btn btn-primary" role="button" href="{% url 'logout' %}">Sign out</a>
     </li>
   </ul>
@@ -62,15 +62,17 @@
                                             <div class="card-body">
                                                 {% block content %}
 
-                                                <h1> Produce</h1>
-                                                <form method="post">
-                                                {% csrf_token %}
-                                                {{ form | crispy}}
+                                                <h1> Help</h1>
+                                                
+                                                <p>
+                                                <p>This  Produce form is used to enter the farm produce into the System</p>
+                                                <p>From Crop : here the user is required to select the crop from the drop down menu</p>
+                                                <p> Quantity: Here the user is required to enter the quantity of the produce in Kgs</p>
+                                                <p>
 
-                                                <input type="submit" value="Submit" />
-
-                                                </form>
-                            
+                                                
+                                                
+                                                </p>
                                                 {% endblock %}
                                             </div>
                                         </div>

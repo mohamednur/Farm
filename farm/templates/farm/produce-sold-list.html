@@ -6,42 +6,47 @@
 {% block content %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Financial Records</h1>
+        <h1 class="h2">Farm Produce sold list</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
-            <a <button type="button" class="btn btn-sm btn-outline-secondary" href="{% url "financial-pdf" %}">Generate farm financial report</button></a>
+            <a <button type="button" class="btn btn-sm btn-outline-secondary" href="{% url "produce-sales-pdf" %}">Generate farm produce sales report</button></a>
           </div>
+          
          
         </div>
       </div>
      
-            <h1>financial Records Lists</h1>
+            <h1>sold Produce</h1>
 
             <table class="table table-striped table-dark ">
                 <thead class="thead-dark">
                     <tr>
-                    <th scope="col">Receipt Number</th>
-                    <th scope="col">Amount (in Ksh)</th>
-                    <th scope="col">Date of Payment</th>
+                    <th scope="col">produce</th>
+                    <th scope="col">Sold Quantity(in Kgs)</th>
+                    <th scope="col">Amount(in Kshs)</th>
+
+                    <th scope="col">Date sold</th>
                     
                     
                     
                     </tr>
                 </thead>
                 <tbody>
-                    {% for finance in object_list %}
+                    {% for produceSold in object_list %}
                     <tr>
                     
-                    <td>{{ finance.receipt_no }}</td>
+                    <td>{{ produceSold.produce }}</td>
                     
-                    <td>{{ finance.Amount }}</td>
+                    <td>{{ produceSold.sold_quantity }}</td>
+                    <td>{{ produceSold.amount }}</td>
+                    <td>{{ produceSold.date_sold }}</td>
                     
-                    <td>{{ finance.date_of_payment }}</td>
+                    
                     <td>
                         
-                        <a class="btn btn-primary" role="button"href="{% url "financialRecords_detail" finance.id %}">Detail</a>
-                        <a class="btn btn-primary" role="button"href="{% url "financialRecords_update" finance.id %}">edit</a>
-                        <a class="btn btn-primary" role="button"href="{% url "financialRecords_delete" finance.id %}">delete</a>
+                        <a class="btn btn-primary" role="button"href="{% url "produce-sold-detail" produceSold.id %}"">detail</a>
+                        <a class="btn btn-primary" role="button"href="{% url "produce-sold-update" produceSold.id %}">edit</a>
+                        <a class="btn btn-primary" role="button"href="{% url "produce-sold-delete" produceSold.id %}"">delete</a>
                         
                   
                     </td>

@@ -35,17 +35,25 @@ class Produce(models.Model):
     date_submitted = models.DateField()
 
     def __str__(self):
-        return '%s %d %s' % (self.from_crop, self.quantity, self.submitted_by)
+        return 'produce from %s' % (self.from_crop)
 
 
 class Seed(models.Model):
-    seed_name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    quantity = models.PositiveIntegerField()
+
+
+class ProduceSold(models.Model):
+    produce = models.ForeignKey(Produce, on_delete=models.CASCADE)
+    sold_quantity = models.PositiveIntegerField()
+    amount = models.FloatField(default=0.0)
+    date_sold = models.DateField()
 
 
 class FinancialRecords(models.Model):
     receipt_no = models.CharField(max_length=30, unique=True)
     Amount = models.FloatField()
-    date_of_payment = models.DateTimeField()
+    date_of_payment = models.DateField()
 
 
 class FarmMachinery(models.Model):
